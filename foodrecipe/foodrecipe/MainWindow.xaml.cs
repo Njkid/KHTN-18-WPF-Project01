@@ -23,6 +23,23 @@ namespace foodrecipe
         public MainWindow()
         {
             InitializeComponent();
+            List<Food> foods = new List<Food>();
+            foods.Add(new Food { FoodImagePath = "./imgs/suon-xao-chua-ngot.jpg", FoodName = "Bò kho"});
+            foods.Add(new Food { FoodImagePath = "./imgs/suon-xao-chua-ngot.jpg", FoodName = "Bò né" });
+            foods.Add(new Food { FoodImagePath = "./imgs/suon-xao-chua-ngot.jpg", FoodName = "Bò né" });
+            foods.Add(new Food { FoodImagePath = "./imgs/suon-xao-chua-ngot.jpg", FoodName = "Bò kho" });
+            foods.Add(new Food { FoodImagePath = "./imgs/suon-xao-chua-ngot.jpg", FoodName = "Bò né" });
+            foods.Add(new Food { FoodImagePath = "./imgs/suon-xao-chua-ngot.jpg", FoodName = "Bò né" });
+            foodsListView.ItemsSource = foods;
+
         }
+
+        
+    }
+
+    public class Food
+    {
+        public string FoodImagePath { get; set; }
+        public string FoodName { get; set; }
     }
 }

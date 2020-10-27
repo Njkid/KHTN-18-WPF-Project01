@@ -5,8 +5,52 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:foodrecipe"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Food Recipe" Height="900px" Width="1050px"
+        MinWidth="1050px"
+        MaxWidth="1050px"
+        MinHeight="900px"
+        MaxHeight="900px"
+        
+        Background="#333333">
     <Grid>
+        <StackPanel Orientation="Vertical">
+
+            
+            <Border BorderBrush="OrangeRed" BorderThickness="1px">
+                <TextBlock FontSize="30pt" Foreground="OrangeRed" TextAlignment="Center" Padding="20px" Background="#2a2a2a">
+                    CÔNG THỨC NẤU ĂN
+                </TextBlock>
+            </Border>
+         
+            
+            
+
+            <ListView Height="600px" Background="#333333" Name="foodsListView" BorderBrush="OrangeRed" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" Margin="20px"/>                          
+                    </ItemsPanelTemplate>                       
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="20px">
+                            <StackPanel Orientation="Vertical" Margin="10px" Background="#5f5f5f">
+                                <Image Source="{Binding FoodImagePath}" Width="150px" Height="150px" Margin="10px">
+                                </Image>
+                                <StackPanel Orientation="Horizontal" Width="150px" Margin="10px">
+                                    <Button>
+                                        Like
+                                    </Button>
+                                    <TextBlock Text="{Binding FoodName}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>                      
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+            
+        </StackPanel>
         
     </Grid>
 </Window>
