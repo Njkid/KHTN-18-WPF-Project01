@@ -5,51 +5,61 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:foodrecipe"
         mc:Ignorable="d"
-        Title="Food Recipe" Height="900px" Width="1050px"
-        MinWidth="1050px"
-        MaxWidth="1050px"
-        MinHeight="900px"
-        MaxHeight="900px"
+        Title="Food Recipe" Height="840px" Width="1105px"
+        MinWidth="1105px"
+        MaxWidth="1105px"
+        MinHeight="840px"
+        MaxHeight="840px"
         
         Background="#333333">
     <Grid>
         <StackPanel Orientation="Vertical">
 
-            
-            <Border BorderBrush="OrangeRed" BorderThickness="1px">
-                <TextBlock FontSize="30pt" Foreground="OrangeRed" TextAlignment="Center" Padding="20px" Background="#2a2a2a">
+
+            <Border BorderBrush="#2a7aa1" BorderThickness="1px">
+                <TextBlock FontSize="30pt" FontWeight="Bold" Foreground="#b9e8ff" TextAlignment="Center" Padding="20px" Background="#2a2a2a">
                     CÔNG THỨC NẤU ĂN
                 </TextBlock>
             </Border>
-         
             
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <TextBox Width="500px" Name="searchTextBox" TextAlignment="Left" Padding="10px" FontSize="12pt" Foreground="#b9e8ff" Background="#333333"
+                         BorderBrush="#2a7aa1"></TextBox>
+                <Button Width="50" x:Name="searchButton" FontSize="22pt" Background="#2a7aa1" BorderBrush="#2a7aa1">⌕</Button>
+            </StackPanel>
             
-
-            <ListView Height="600px" Background="#333333" Name="foodsListView" BorderBrush="OrangeRed" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" Margin="20px"/>                          
-                    </ItemsPanelTemplate>                       
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Margin="20px">
-                            <StackPanel Orientation="Vertical" Margin="10px" Background="#5f5f5f">
-                                <Image Source="{Binding FoodImagePath}" Width="150px" Height="150px" Margin="10px">
-                                </Image>
-                                <StackPanel Orientation="Horizontal" Width="150px" Margin="10px">
-                                    <Button>
-                                        Like
-                                    </Button>
-                                    <TextBlock Text="{Binding FoodName}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Width="50" Name="previousPageButton" Background="#444444" Foreground="#6f6f6f" BorderThickness="0" FontSize="30pt" FontWeight="Bold"> </Button>
+                <ListView Height="580px" Width="990px" Background="#444444" Name="foodsListView" BorderBrush="OrangeRed" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" Margin="10px"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="20px">
+                                <StackPanel Orientation="Vertical" Margin="10px" Background="#5f5f5f">
+                                    <Image Source="{Binding FoodImagePath}" Width="230px" Height="150px" Margin="10px">
+                                    </Image>
+                                    <StackPanel Orientation="Horizontal" Width="150px" Margin="10px">
+                                        <Button>
+                                            Like
+                                        </Button>
+                                        <TextBlock Text="{Binding FoodName}"/>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </Border>                      
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button Width="50" Name="nextPageButton" Background="#444444" Foreground="#6f6f6f" BorderThickness="0" FontSize="30pt" FontWeight="Bold"></Button>
+            </StackPanel>
             
-            
+            <StackPanel Orientation="Vertical">
+                <TextBlock x:Name="numPageTextBlock" Text="1/10" FontSize="25" Foreground="AliceBlue" TextAlignment="Center" Padding="10" Background="#333333"></TextBlock>
+            </StackPanel>        
+                    
         </StackPanel>
         
     </Grid>
