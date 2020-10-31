@@ -12,12 +12,16 @@
         MaxHeight="840px"
         
         Background="#333333">
+    <Window.Resources>
+        <local:BtnColorConverter x:Key="BtnColorConverter"></local:BtnColorConverter>
+    </Window.Resources>
+    
     <Grid>
         <StackPanel Orientation="Vertical">
 
 
             <Border BorderBrush="#2a7aa1" BorderThickness="1px">
-                <TextBlock FontSize="30pt" FontWeight="Bold" Foreground="#b9e8ff" TextAlignment="Center" Padding="20px" Background="#2a2a2a">
+                <TextBlock Name="programLabel"  FontSize="30pt" FontWeight="Bold" Foreground="#b9e8ff" TextAlignment="Center" Padding="20px" Background="#2a2a2a">
                     CÔNG THỨC NẤU ĂN
                 </TextBlock>
             </Border>
@@ -42,11 +46,12 @@
                                 <StackPanel Orientation="Vertical" Margin="10px" Background="#5f5f5f">
                                     <Image Source="{Binding FoodImagePath}" Width="230px" Height="150px" Margin="10px">
                                     </Image>
-                                    <StackPanel Orientation="Horizontal" Width="150px" Margin="10px">
-                                        <Button>
-                                            Like
+                                    <StackPanel Orientation="Horizontal" Width="205px" Margin="10px">
+                                        <Button Width="40" Background="{Binding Path=Liked, Converter={StaticResource BtnColorConverter}}" BorderThickness="0" FontSize="15" Click="ButtonLike_Click">
+                                            ♥
                                         </Button>
-                                        <TextBlock Text="{Binding FoodName}"/>
+                                        <TextBlock Text="{Binding FoodName}" FontSize="12pt" FontWeight="Bold" Foreground="AliceBlue"
+                                                  Width="150" TextAlignment="Center" />
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
