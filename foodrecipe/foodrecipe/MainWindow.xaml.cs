@@ -27,29 +27,36 @@ namespace foodrecipe
         public static string WorkingDerectory { set; get; }
 
         public PageManager pageManager;
+        public List<Food> foods;
+        public List<Food> subListFoods;
+
+        // Init sort type for list
+        public SortAZFoodByName sortAZFoodByName = new SortAZFoodByName();
+        public SortZAFoodByName sortZAFoodByName = new SortZAFoodByName();
+        public SortAZFoodByDate sortAZFoodByDate = new SortAZFoodByDate();
+        public SortZAFoodByDate sortZAFoodByDate = new SortZAFoodByDate();
 
         public MainWindow()
         {
-            InitializeComponent();
+            // Main List            
+            foods = FoodDAO.GetAll();
 
+            // Sub List
+            subListFoods = new List<Food>(foods);
+            subListFoods.Sort(sortAZFoodByName);
+
+            // Page Manager
+            pageManager = new PageManager(subListFoods);
+
+
+            InitializeComponent();
             
 
             WorkingDerectory = System.IO.Directory.GetCurrentDirectory().Replace('\\','/') + "/";
             Debug.WriteLine(WorkingDerectory);
-
-            SortFoodtByName sortFoodByName = new SortFoodtByName();
-
-
+                                    
             previousPageButton.Content = "<";
-            nextPageButton.Content = ">";
-                       
-            
-            List<Food> foods = FoodDAO.GetAll();
-            //Comparer and sort
-            foods.Sort(sortFoodByName);
-
-            pageManager = new PageManager(foods);
-
+            nextPageButton.Content = ">";            
 
             foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
             numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
@@ -58,14 +65,14 @@ namespace foodrecipe
             DateTime dateTime = DateTime.Now;
             Debug.WriteLine(dateTime.ToString("dd/MM/yyyy"));
 
-
         }
 
-        private void ButtonLike_Click(object sender, RoutedEventArgs e)
+        private void buttonLike_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
             var bc = new BrushConverter();
 
+            // Change color when click
             if (btn.Background.ToString().ToLower().Equals("#ff9f9f9f"))
             {
                 btn.Background = (Brush)bc.ConvertFrom("#2a7aa1");
@@ -74,6 +81,14 @@ namespace foodrecipe
             {
                 btn.Background = (Brush)bc.ConvertFrom("#9f9f9f");
             }
+
+            // debug binding data
+            foreach (var item in subListFoods)
+            {
+                Debug.WriteLine(item.Liked);
+            }
+
+            
         }
 
         private void previousPageButton_Click(object sender, RoutedEventArgs e)
@@ -94,6 +109,48 @@ namespace foodrecipe
                 foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
             }
 
+        }
+
+        private void sortAZNameSelection_Selected(object sender, RoutedEventArgs e)
+        {
+            pageManager.ListFood.Sort(sortAZFoodByName);
+            if (foodsListView != null) 
+                foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+        }
+
+        private void sortZANameSelection_Selected(object sender, RoutedEventArgs e)
+        {
+            pageManager.ListFood.Sort(sortZAFoodByName);
+            if (foodsListView != null)
+                foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+        }
+
+        private void sortAZDateSelection_Selected(object sender, RoutedEventArgs e)
+        {
+            pageManager.ListFood.Sort(sortAZFoodByDate);
+            if (foodsListView != null)
+                foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+        }
+
+        private void sortZADateSelection_Selected(object sender, RoutedEventArgs e)
+        {
+            pageManager.ListFood.Sort(sortZAFoodByDate);
+            if (foodsListView != null)
+                foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+        }
+
+        private void favoriteFilter_Checked(object sender, RoutedEventArgs e)
+        {
+            pageManager.UpdateListFood(subListFoods.Where(item => item.Liked == true).ToList());
+            numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
+            foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+        }
+
+        private void favoriteFilter_Unchecked(object sender, RoutedEventArgs e)
+        {
+            pageManager.UpdateListFood(subListFoods);
+            numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
+            foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
         }
     }
 
@@ -129,6 +186,13 @@ namespace foodrecipe
         public void UpdateMaxPage()
         {
             MaxPage = ListFood.Count / NumPerPage + (ListFood.Count % NumPerPage == 0 ? 0 : 1);
+        }
+
+        public void UpdateListFood( List<Food> foods)
+        {
+            CurrentPage = 1;
+            ListFood = foods;
+            UpdateMaxPage();
         }
         
         
@@ -200,11 +264,33 @@ namespace foodrecipe
 
     }
 
-    public class SortFoodtByName :IComparer<Food>
+    public class SortAZFoodByName :IComparer<Food>
     {
         public int Compare(Food x, Food y)
         {
             return String.Compare(x.FoodName, y.FoodName);
+        }
+    }
+
+    public class SortZAFoodByName : IComparer<Food>
+    {
+        public int Compare(Food x, Food y)
+        {
+            return -String.Compare(x.FoodName, y.FoodName);
+        }
+    }
+    public class SortZAFoodByDate : IComparer<Food>
+    {
+        public int Compare(Food x, Food y)
+        {
+            return -String.Compare(x.Date, y.Date);
+        }
+    }
+    public class SortAZFoodByDate : IComparer<Food>
+    {
+        public int Compare(Food x, Food y)
+        {
+            return String.Compare(x.Date, y.Date);
         }
     }
 }

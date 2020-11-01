@@ -10,6 +10,7 @@
         MaxWidth="1105px"
         MinHeight="840px"
         MaxHeight="840px"
+        WindowStartupLocation="CenterScreen"
         
         Background="#333333">
     <Window.Resources>
@@ -31,6 +32,38 @@
                 <TextBox Width="500px" Name="searchTextBox" TextAlignment="Left" Padding="10px" FontSize="12pt" Foreground="#b9e8ff" Background="#333333"
                          BorderBrush="#2a7aa1"></TextBox>
                 <Button Width="50" x:Name="searchButton" FontSize="22pt" Background="#2a7aa1" BorderBrush="#2a7aa1">⌕</Button>
+                
+                <ComboBox x:Name="filterComboBox" Background="#2a7aa1" Width="100" Margin="20,0,0,0" FontSize="14pt" VerticalAlignment="Center">                    
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="Background" Value="#2a7aa1"/>
+                            <Setter Property="BorderBrush" Value="#2a7aa1"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBoxItem Name="sortAZNameSelection" IsSelected ="true" Selected="sortAZNameSelection_Selected">
+                        <TextBlock>↓ Tên</TextBlock>
+                    </ComboBoxItem>
+                    <ComboBoxItem Name="sortZANameSelection" Selected="sortZANameSelection_Selected">
+                        <TextBlock>↑ Tên</TextBlock>
+                    </ComboBoxItem>
+                    <ComboBoxItem Name="sortAZDateSelection" Selected="sortAZDateSelection_Selected">
+                        <TextBlock >↓ Ngày</TextBlock>
+                    </ComboBoxItem>
+                    <ComboBoxItem Name="sortZADateSelection" Selected="sortZADateSelection_Selected">
+                        <TextBlock>↑ Ngày</TextBlock>
+                    </ComboBoxItem>                   
+                </ComboBox>
+                
+                <StackPanel Orientation="Horizontal" Margin="50,0,0,0">
+                    <CheckBox  Name="favoriteFilter" Background="#2a7aa1" BorderBrush="#2a7aa1" VerticalAlignment="Center" Checked="favoriteFilter_Checked" Unchecked="favoriteFilter_Unchecked"></CheckBox>
+                    <TextBlock Margin="15,0,0,0" FontSize="14pt" VerticalAlignment="Center" Foreground="#2a7aa1">Yêu thích</TextBlock>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="50,0,0,0">
+                    <Button x:Name="createRecipeButton" FontSize="16pt" Padding="10,0,10,0" Background="#2a7aa1" BorderBrush="#2a7aa1">+ Tạo mới</Button>
+                </StackPanel>
+                
+                
             </StackPanel>
             
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -48,10 +81,11 @@
                                     <Image Source="{Binding Path=FoodImagePath, Converter={StaticResource DirectoryConverter}}" Width="230px" Height="150px" Margin="10px">
                                     </Image>
                                     <StackPanel Orientation="Horizontal" Width="205px" Margin="10px">
-                                        <Button Width="40" Background="{Binding Path=Liked, Converter={StaticResource BtnColorConverter}}" BorderThickness="0" FontSize="15" Click="ButtonLike_Click">
+                                        <Button Width="40" Background="{Binding Path=Liked, Converter={StaticResource BtnColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                BorderThickness="0" FontSize="15" Click="buttonLike_Click">
                                             ♥
                                         </Button>
-                                        <TextBlock Text="{Binding FoodName}" FontSize="12pt" FontWeight="Bold" Foreground="AliceBlue"
+                                        <TextBlock Text="{Binding FoodName}" FontSize="12pt" FontWeight="Bold" Foreground="#b9e8ff"
                                                   Width="150" TextAlignment="Center" />
                                     </StackPanel>
                                 </StackPanel>
