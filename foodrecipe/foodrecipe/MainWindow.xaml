@@ -14,6 +14,7 @@
         Background="#333333">
     <Window.Resources>
         <local:BtnColorConverter x:Key="BtnColorConverter"></local:BtnColorConverter>
+        <local:DirectoryConverter x:Key="DirectoryConverter"></local:DirectoryConverter>
     </Window.Resources>
     
     <Grid>
@@ -33,7 +34,7 @@
             </StackPanel>
             
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Width="50" Name="previousPageButton" Background="#444444" Foreground="#6f6f6f" BorderThickness="0" FontSize="30pt" FontWeight="Bold"> </Button>
+                <Button Width="50" Name="previousPageButton" Background="#444444" Foreground="#6f6f6f" BorderThickness="0" FontSize="30pt" FontWeight="Bold" Click="previousPageButton_Click"> </Button>
                 <ListView Height="580px" Width="990px" Background="#444444" Name="foodsListView" BorderBrush="OrangeRed" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -44,7 +45,7 @@
                         <DataTemplate>
                             <Border Margin="20px">
                                 <StackPanel Orientation="Vertical" Margin="10px" Background="#5f5f5f">
-                                    <Image Source="{Binding FoodImagePath}" Width="230px" Height="150px" Margin="10px">
+                                    <Image Source="{Binding Path=FoodImagePath, Converter={StaticResource DirectoryConverter}}" Width="230px" Height="150px" Margin="10px">
                                     </Image>
                                     <StackPanel Orientation="Horizontal" Width="205px" Margin="10px">
                                         <Button Width="40" Background="{Binding Path=Liked, Converter={StaticResource BtnColorConverter}}" BorderThickness="0" FontSize="15" Click="ButtonLike_Click">
@@ -58,7 +59,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <Button Width="50" Name="nextPageButton" Background="#444444" Foreground="#6f6f6f" BorderThickness="0" FontSize="30pt" FontWeight="Bold"></Button>
+                <Button Width="50" Name="nextPageButton" Background="#444444" Foreground="#6f6f6f" BorderThickness="0" FontSize="30pt" FontWeight="Bold" Click="nextPageButton_Click"></Button>
             </StackPanel>
             
             <StackPanel Orientation="Vertical">

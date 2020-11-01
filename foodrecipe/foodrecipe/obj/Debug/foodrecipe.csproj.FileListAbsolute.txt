@@ -13,3 +13,4 @@ D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\ob
 D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\obj\Debug\foodrecipe.exe
 D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\obj\Debug\foodrecipe.pdb
 D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\bin\Debug\imgs\suon-xao-chua-ngot.jpg
