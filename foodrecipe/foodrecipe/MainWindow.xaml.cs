@@ -67,91 +67,108 @@ namespace foodrecipe
 
         }
 
-        private void buttonLike_Click(object sender, RoutedEventArgs e)
-        {
-            var btn = sender as Button;
-            var bc = new BrushConverter();
+        #region Button
+            private void buttonLike_Click(object sender, RoutedEventArgs e)
+            {
+                var btn = sender as Button;
+                var bc = new BrushConverter();
 
-            // Change color when click
-            if (btn.Background.ToString().ToLower().Equals("#ff9f9f9f"))
-            {
-                btn.Background = (Brush)bc.ConvertFrom("#2a7aa1");
-            }
-            else
-            {
-                btn.Background = (Brush)bc.ConvertFrom("#9f9f9f");
-            }
+                // Change color when click
+                if (btn.Background.ToString().ToLower().Equals("#ff9f9f9f"))
+                {
+                    btn.Background = (Brush)bc.ConvertFrom("#2a7aa1");
+                }
+                else
+                {
+                    btn.Background = (Brush)bc.ConvertFrom("#9f9f9f");
+                }
 
-            // debug binding data
-            foreach (var item in subListFoods)
-            {
-                Debug.WriteLine(item.Liked);
-            }
+                // debug binding data
+                foreach (var item in subListFoods)
+                {
+                    Debug.WriteLine(item.Liked);
+                }
 
             
-        }
+            }
 
-        private void previousPageButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (pageManager.CurrentPage > 1)
+            private void previousPageButton_Click(object sender, RoutedEventArgs e)
             {
-                numPageTextBlock.Text = (--pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
+                if (pageManager.CurrentPage > 1)
+                {
+                    numPageTextBlock.Text = (--pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
+                    foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+                }
+
+            }
+
+            private void nextPageButton_Click(object sender, RoutedEventArgs e)
+            {
+                if (pageManager.CurrentPage < pageManager.MaxPage )
+                {
+                    numPageTextBlock.Text =(++pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
+                    foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+                }
+
+            }
+
+            private void searchButton_Click(object sender, RoutedEventArgs e)
+            {
+                string key = searchTextBox.Text.ToLower();
+
+                pageManager.UpdateListFood(subListFoods.Where(item => item.FoodName.ToLower().IndexOf(key) >= 0).ToList());
+                numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
+                foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+
+            }
+
+        #endregion
+         
+        #region Sort and Filter
+            private void sortAZNameSelection_Selected(object sender, RoutedEventArgs e)
+            {
+                pageManager.ListFood.Sort(sortAZFoodByName);
+                if (foodsListView != null) 
+                    foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+            }
+
+            private void sortZANameSelection_Selected(object sender, RoutedEventArgs e)
+            {
+                pageManager.ListFood.Sort(sortZAFoodByName);
+                if (foodsListView != null)
+                    foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+            }
+
+            private void sortAZDateSelection_Selected(object sender, RoutedEventArgs e)
+            {
+                pageManager.ListFood.Sort(sortAZFoodByDate);
+                if (foodsListView != null)
+                    foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+            }
+
+            private void sortZADateSelection_Selected(object sender, RoutedEventArgs e)
+            {
+                pageManager.ListFood.Sort(sortZAFoodByDate);
+                if (foodsListView != null)
+                    foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+            }
+
+            private void favoriteFilter_Checked(object sender, RoutedEventArgs e)
+            {
+                pageManager.UpdateListFood(subListFoods.Where(item => item.Liked == true).ToList());
+                numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
                 foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
             }
 
-        }
-
-        private void nextPageButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (pageManager.CurrentPage < pageManager.MaxPage )
+            private void favoriteFilter_Unchecked(object sender, RoutedEventArgs e)
             {
-                numPageTextBlock.Text =(++pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
+                pageManager.UpdateListFood(subListFoods);
+                numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
                 foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
             }
 
-        }
+        #endregion
 
-        private void sortAZNameSelection_Selected(object sender, RoutedEventArgs e)
-        {
-            pageManager.ListFood.Sort(sortAZFoodByName);
-            if (foodsListView != null) 
-                foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
-        }
-
-        private void sortZANameSelection_Selected(object sender, RoutedEventArgs e)
-        {
-            pageManager.ListFood.Sort(sortZAFoodByName);
-            if (foodsListView != null)
-                foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
-        }
-
-        private void sortAZDateSelection_Selected(object sender, RoutedEventArgs e)
-        {
-            pageManager.ListFood.Sort(sortAZFoodByDate);
-            if (foodsListView != null)
-                foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
-        }
-
-        private void sortZADateSelection_Selected(object sender, RoutedEventArgs e)
-        {
-            pageManager.ListFood.Sort(sortZAFoodByDate);
-            if (foodsListView != null)
-                foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
-        }
-
-        private void favoriteFilter_Checked(object sender, RoutedEventArgs e)
-        {
-            pageManager.UpdateListFood(subListFoods.Where(item => item.Liked == true).ToList());
-            numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
-            foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
-        }
-
-        private void favoriteFilter_Unchecked(object sender, RoutedEventArgs e)
-        {
-            pageManager.UpdateListFood(subListFoods);
-            numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
-            foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
-        }
     }
 
     public class PageManager
@@ -249,6 +266,7 @@ namespace foodrecipe
         {
             List<Food> result = new List<Food>();
 
+            // demo data
             result.Add(new Food { FoodID = 0, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "zBò kho", Liked=false  });
             result.Add(new Food { FoodID = 1, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "gBò né", Liked = true  });
             result.Add(new Food { FoodID = 2, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "cBò né", Liked = false });
@@ -264,6 +282,7 @@ namespace foodrecipe
 
     }
 
+    #region Type Sort Class
     public class SortAZFoodByName :IComparer<Food>
     {
         public int Compare(Food x, Food y)
@@ -293,4 +312,6 @@ namespace foodrecipe
             return String.Compare(x.Date, y.Date);
         }
     }
+
+    #endregion
 }

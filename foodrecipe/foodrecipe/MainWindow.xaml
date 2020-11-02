@@ -29,9 +29,11 @@
             </Border>
             
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <TextBox Width="500px" Name="searchTextBox" TextAlignment="Left" Padding="10px" FontSize="12pt" Foreground="#b9e8ff" Background="#333333"
+                <TextBox Width="500px" Name="searchTextBox" TextAlignment="Left" Padding="10px" FontSize="12pt" 
+                         Foreground="#b9e8ff" 
+                         Background="#333333"
                          BorderBrush="#2a7aa1"></TextBox>
-                <Button Width="50" x:Name="searchButton" FontSize="22pt" Background="#2a7aa1" BorderBrush="#2a7aa1">⌕</Button>
+                <Button Width="50" x:Name="searchButton" FontSize="22pt" Background="#2a7aa1" BorderBrush="#2a7aa1" Click="searchButton_Click">⌕</Button>
                 
                 <ComboBox x:Name="filterComboBox" Background="#2a7aa1" Width="100" Margin="20,0,0,0" FontSize="14pt" VerticalAlignment="Center">                    
                     <ComboBox.ItemContainerStyle>
