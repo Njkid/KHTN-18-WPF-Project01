@@ -22,31 +22,31 @@ namespace foodrecipe
     /// </summary>
     /// 
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : Fluent.RibbonWindow
     {
         public static string WorkingDerectory { set; get; }
 
         public PageManager pageManager;
-        public List<Food> foods;
-        public List<Food> subListFoods;
+        public List<Recipe> foods;
+        public List<Recipe> subListRecipes;
 
         // Init sort type for list
-        public SortAZFoodByName sortAZFoodByName = new SortAZFoodByName();
-        public SortZAFoodByName sortZAFoodByName = new SortZAFoodByName();
-        public SortAZFoodByDate sortAZFoodByDate = new SortAZFoodByDate();
-        public SortZAFoodByDate sortZAFoodByDate = new SortZAFoodByDate();
+        public SortAZRecipeByName sortAZRecipeByName = new SortAZRecipeByName();
+        public SortZARecipeByName sortZARecipeByName = new SortZARecipeByName();
+        public SortAZRecipeByDate sortAZRecipeByDate = new SortAZRecipeByDate();
+        public SortZARecipeByDate sortZARecipeByDate = new SortZARecipeByDate();
 
         public MainWindow()
         {
             // Main List            
-            foods = FoodDAO.GetAll();
+            foods = RecipeDAO.GetAll();
 
             // Sub List
-            subListFoods = new List<Food>(foods);
-            subListFoods.Sort(sortAZFoodByName);
+            subListRecipes = new List<Recipe>(foods);
+            subListRecipes.Sort(sortAZRecipeByName);
 
             // Page Manager
-            pageManager = new PageManager(subListFoods);
+            pageManager = new PageManager(subListRecipes);
 
 
             InitializeComponent();
@@ -74,17 +74,17 @@ namespace foodrecipe
                 var bc = new BrushConverter();
 
                 // Change color when click
-                if (btn.Background.ToString().ToLower().Equals("#ff9f9f9f"))
+                if (btn.Foreground.ToString().ToLower().Equals("#ff9f9f9f"))
                 {
-                    btn.Background = (Brush)bc.ConvertFrom("#2a7aa1");
+                    btn.Foreground = (Brush)bc.ConvertFrom("#ff0000");
                 }
                 else
                 {
-                    btn.Background = (Brush)bc.ConvertFrom("#9f9f9f");
+                    btn.Foreground = (Brush)bc.ConvertFrom("#9f9f9f");
                 }
 
                 // debug binding data
-                foreach (var item in subListFoods)
+                foreach (var item in subListRecipes)
                 {
                     Debug.WriteLine(item.Liked);
                 }
@@ -116,7 +116,7 @@ namespace foodrecipe
             {
                 string key = searchTextBox.Text.ToLower();
 
-                pageManager.UpdateListFood(subListFoods.Where(item => item.FoodName.ToLower().IndexOf(key) >= 0).ToList());
+                pageManager.UpdateListRecipe(subListRecipes.Where(item => item.RecipeName.ToLower().IndexOf(key) >= 0).ToList());
                 numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
                 foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
 
@@ -127,48 +127,57 @@ namespace foodrecipe
         #region Sort and Filter
             private void sortAZNameSelection_Selected(object sender, RoutedEventArgs e)
             {
-                pageManager.ListFood.Sort(sortAZFoodByName);
+                pageManager.ListRecipe.Sort(sortAZRecipeByName);
                 if (foodsListView != null) 
                     foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
             }
 
             private void sortZANameSelection_Selected(object sender, RoutedEventArgs e)
             {
-                pageManager.ListFood.Sort(sortZAFoodByName);
+                pageManager.ListRecipe.Sort(sortZARecipeByName);
                 if (foodsListView != null)
                     foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
             }
 
             private void sortAZDateSelection_Selected(object sender, RoutedEventArgs e)
             {
-                pageManager.ListFood.Sort(sortAZFoodByDate);
+                pageManager.ListRecipe.Sort(sortAZRecipeByDate);
                 if (foodsListView != null)
                     foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
             }
 
             private void sortZADateSelection_Selected(object sender, RoutedEventArgs e)
             {
-                pageManager.ListFood.Sort(sortZAFoodByDate);
+                pageManager.ListRecipe.Sort(sortZARecipeByDate);
                 if (foodsListView != null)
                     foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
             }
 
             private void favoriteFilter_Checked(object sender, RoutedEventArgs e)
             {
-                pageManager.UpdateListFood(subListFoods.Where(item => item.Liked == true).ToList());
+                pageManager.UpdateListRecipe(subListRecipes.Where(item => item.Liked == true).ToList());
                 numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
                 foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
             }
 
             private void favoriteFilter_Unchecked(object sender, RoutedEventArgs e)
             {
-                pageManager.UpdateListFood(subListFoods);
+                pageManager.UpdateListRecipe(subListRecipes);
                 numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
                 foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
             }
 
         #endregion
 
+        private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = sender as ListViewItem;
+            if (item != null && item.IsSelected)
+            {
+                Window detail = new Detail();
+                detail.Show();
+            }
+        }
     }
 
     public class PageManager
@@ -181,34 +190,34 @@ namespace foodrecipe
             CurrentPage = 1;
         }
 
-        public PageManager(List<Food> list)
+        public PageManager(List<Recipe> list)
         {
             CurrentPage = 1;
-            ListFood = list;
+            ListRecipe = list;
             MaxPage = list.Count / NumPerPage + (list.Count % NumPerPage == 0 ? 0 : 1);
 
         }
 
-        public List<Food> ListFood { get; set; }
+        public List<Recipe> ListRecipe { get; set; }
         public int MaxPage { get; set; }
         public int CurrentPage { get; set; }
 
-        public List<Food> GetDataCurrentPage()
+        public List<Recipe> GetDataCurrentPage()
         {
-            var temp = ListFood.Skip((CurrentPage - 1) * NumPerPage).Take(NumPerPage).Cast<Food>();
-            List<Food> currentItems = new List<Food>(temp);
+            var temp = ListRecipe.Skip((CurrentPage - 1) * NumPerPage).Take(NumPerPage).Cast<Recipe>();
+            List<Recipe> currentItems = new List<Recipe>(temp);
             return currentItems;
         }
 
         public void UpdateMaxPage()
         {
-            MaxPage = ListFood.Count / NumPerPage + (ListFood.Count % NumPerPage == 0 ? 0 : 1);
+            MaxPage = ListRecipe.Count / NumPerPage + (ListRecipe.Count % NumPerPage == 0 ? 0 : 1);
         }
 
-        public void UpdateListFood( List<Food> foods)
+        public void UpdateListRecipe( List<Recipe> foods)
         {
             CurrentPage = 1;
-            ListFood = foods;
+            ListRecipe = foods;
             UpdateMaxPage();
         }
         
@@ -221,14 +230,14 @@ namespace foodrecipe
         {
             if ((bool)value)
             {
-                return "#2a7aa1";
+                return "#ff0000";
             }
             return "#9f9f9f";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value.ToString().ToLower().Equals("#2a7aa1") || value.ToString().ToLower().Equals("#ff2a7aa1"))
+            if (value.ToString().ToLower().Equals("#ff0000") || value.ToString().ToLower().Equals("#ffff0000"))
             {
                 return true;
             }
@@ -250,32 +259,39 @@ namespace foodrecipe
         }
     }
 
-    public class Food
+    public class Recipe
     {
-        public int FoodID { get; set; }
-        public string FoodImagePath { get; set; }
-        public string FoodName { get; set; }
+        public int RecipeID { get; set; }
+        public string RecipeImagePath { get; set; }
+        public string RecipeName { get; set; }
         public bool Liked { get; set; }
         public string Date { get; set; }
+        public Step[] steps { get; set; }
 
     }
 
-    public class FoodDAO
+    public class Step
     {
-        public static List<Food> GetAll()
+        public string Text { get; set; }
+        public string Img { get; set; }
+    }
+
+    public class RecipeDAO
+    {
+        public static List<Recipe> GetAll()
         {
-            List<Food> result = new List<Food>();
+            List<Recipe> result = new List<Recipe>();
 
             // demo data
-            result.Add(new Food { FoodID = 0, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "zBò kho", Liked=false  });
-            result.Add(new Food { FoodID = 1, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "gBò né", Liked = true  });
-            result.Add(new Food { FoodID = 2, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "cBò né", Liked = false });
-            result.Add(new Food { FoodID = 3, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "dBò kho", Liked = true });
-            result.Add(new Food { FoodID = 4, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "hBò né", Liked = false });
-            result.Add(new Food { FoodID = 5, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "nnBò né", Liked = false });
-            result.Add(new Food { FoodID = 6, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "dfBò kho", Liked = true });
-            result.Add(new Food { FoodID = 7, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "zxBò né", Liked = false });
-            result.Add(new Food { FoodID = 8, Date = "01/11/2020", FoodImagePath = "imgs/suon-xao-chua-ngot.jpg", FoodName = "fxBò né", Liked = false });
+            result.Add(new Recipe { RecipeID = 0, Date = "01/11/2020", RecipeImagePath = "imgs/suon-xao-chua-ngot.jpg", RecipeName = "zBò kho", Liked=false  });
+            result.Add(new Recipe { RecipeID = 1, Date = "01/11/2020", RecipeImagePath = "imgs/suon-xao-chua-ngot.jpg", RecipeName = "gBò né", Liked = true  });
+            result.Add(new Recipe { RecipeID = 2, Date = "01/11/2020", RecipeImagePath = "imgs/suon-xao-chua-ngot.jpg", RecipeName = "cBò né", Liked = false });
+            result.Add(new Recipe { RecipeID = 3, Date = "01/11/2020", RecipeImagePath = "imgs/suon-xao-chua-ngot.jpg", RecipeName = "dBò kho", Liked = true });
+            result.Add(new Recipe { RecipeID = 4, Date = "01/11/2020", RecipeImagePath = "imgs/suon-xao-chua-ngot.jpg", RecipeName = "hBò né", Liked = false });
+            result.Add(new Recipe { RecipeID = 5, Date = "01/11/2020", RecipeImagePath = "imgs/suon-xao-chua-ngot.jpg", RecipeName = "nnBò né", Liked = false });
+            result.Add(new Recipe { RecipeID = 6, Date = "01/11/2020", RecipeImagePath = "imgs/suon-xao-chua-ngot.jpg", RecipeName = "dfBò kho", Liked = true });
+            result.Add(new Recipe { RecipeID = 7, Date = "01/11/2020", RecipeImagePath = "imgs/suon-xao-chua-ngot.jpg", RecipeName = "zxBò né", Liked = false });
+            result.Add(new Recipe { RecipeID = 8, Date = "01/11/2020", RecipeImagePath = "imgs/suon-xao-chua-ngot.jpg", RecipeName = "fxBò né", Liked = false });
 
             return result;
         }
@@ -283,31 +299,31 @@ namespace foodrecipe
     }
 
     #region Type Sort Class
-    public class SortAZFoodByName :IComparer<Food>
+    public class SortAZRecipeByName :IComparer<Recipe>
     {
-        public int Compare(Food x, Food y)
+        public int Compare(Recipe x, Recipe y)
         {
-            return String.Compare(x.FoodName, y.FoodName);
+            return String.Compare(x.RecipeName, y.RecipeName);
         }
     }
 
-    public class SortZAFoodByName : IComparer<Food>
+    public class SortZARecipeByName : IComparer<Recipe>
     {
-        public int Compare(Food x, Food y)
+        public int Compare(Recipe x, Recipe y)
         {
-            return -String.Compare(x.FoodName, y.FoodName);
+            return -String.Compare(x.RecipeName, y.RecipeName);
         }
     }
-    public class SortZAFoodByDate : IComparer<Food>
+    public class SortZARecipeByDate : IComparer<Recipe>
     {
-        public int Compare(Food x, Food y)
+        public int Compare(Recipe x, Recipe y)
         {
             return -String.Compare(x.Date, y.Date);
         }
     }
-    public class SortAZFoodByDate : IComparer<Food>
+    public class SortAZRecipeByDate : IComparer<Recipe>
     {
-        public int Compare(Food x, Food y)
+        public int Compare(Recipe x, Recipe y)
         {
             return String.Compare(x.Date, y.Date);
         }

@@ -26,7 +26,7 @@ namespace foodrecipe
         public SplashScreen()
         {
             InitializeComponent();
-            timer = new Timer(4000);
+            timer = new Timer(1000);
             timer.Elapsed += ToMainWindows;
 
             string WorkingDerectory = System.IO.Directory.GetCurrentDirectory().Replace('\\', '/') + "/";
@@ -45,7 +45,8 @@ namespace foodrecipe
                 timer.Stop();
                 this.Hide();
                 MainWindow mainWindow = new MainWindow();
-                mainWindow.Show(); 
+                mainWindow.Show();
+                this.Close();
             }));
             
         }

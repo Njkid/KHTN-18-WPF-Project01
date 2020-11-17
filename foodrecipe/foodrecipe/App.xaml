@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:foodrecipe"
              StartupUri="SplashScreen.xaml">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Themes/Dark.Cyan.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
          
     </Application.Resources>
 </Application>

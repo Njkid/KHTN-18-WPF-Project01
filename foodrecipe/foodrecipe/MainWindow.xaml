@@ -1,17 +1,18 @@
-﻿<Window x:Class="foodrecipe.MainWindow"
+﻿<Fluent:RibbonWindow x:Class="foodrecipe.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
         xmlns:local="clr-namespace:foodrecipe"
         mc:Ignorable="d"
-        Title="Food Recipe" Height="840px" Width="1105px"
+        Title="Food Recipe" Height="800px" Width="1105px"
         MinWidth="1105px"
         MaxWidth="1105px"
-        MinHeight="840px"
-        MaxHeight="840px"
+        MinHeight="800px"
+        MaxHeight="800px"
         WindowStartupLocation="CenterScreen"
-        
+        BorderBrush="#444444"
         Background="#333333">
     <Window.Resources>
         <local:BtnColorConverter x:Key="BtnColorConverter"></local:BtnColorConverter>
@@ -19,90 +20,118 @@
     </Window.Resources>
     
     <Grid>
-        <StackPanel Orientation="Vertical">
+        
+        <StackPanel Orientation="Vertical" Margin="0,20,0,0">
+            <Fluent:Ribbon Height="45px">
+                <Fluent:Ribbon.Menu>
+                    <Fluent:Backstage Header="☰" FontSize="24pt">
+                        <Fluent:BackstageTabControl >
+                            <Fluent:BackstageTabItem Header="Info" FontSize="14pt">
+                                <StackPanel>
+                                    <Label>ID: 18120333</Label>
+                                    <Label>Name: NGUYEN QUOC DUNG</Label>
+                                </StackPanel>
+
+                            </Fluent:BackstageTabItem>
+
+                            <Fluent:BackstageTabItem Header="Exit" FontSize="14pt">
 
 
-            <Border BorderBrush="#2a7aa1" BorderThickness="1px">
-                <TextBlock Name="programLabel"  FontSize="30pt" FontWeight="Bold" Foreground="#b9e8ff" TextAlignment="Center" Padding="20px" Background="#2a2a2a">
-                    CÔNG THỨC NẤU ĂN
-                </TextBlock>
-            </Border>
+                            </Fluent:BackstageTabItem>
+
+                        </Fluent:BackstageTabControl>
+                    </Fluent:Backstage>
+
+                </Fluent:Ribbon.Menu>
+            </Fluent:Ribbon>
             
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <TextBox Width="500px" Name="searchTextBox" TextAlignment="Left" Padding="10px" FontSize="12pt" 
+            <DockPanel LastChildFill="True">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" DockPanel.Dock="Top">
+                    <TextBox Width="500px" Name="searchTextBox" TextAlignment="Left" Padding="10px" FontSize="12pt" 
                          Foreground="#b9e8ff" 
                          Background="#333333"
-                         BorderBrush="#2a7aa1"></TextBox>
-                <Button Width="50" x:Name="searchButton" FontSize="22pt" Background="#2a7aa1" BorderBrush="#2a7aa1" Click="searchButton_Click">⌕</Button>
-                
-                <ComboBox x:Name="filterComboBox" Background="#2a7aa1" Width="100" Margin="20,0,0,0" FontSize="14pt" VerticalAlignment="Center">                    
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem">
-                            <Setter Property="Background" Value="#2a7aa1"/>
-                            <Setter Property="BorderBrush" Value="#2a7aa1"/>
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                    <ComboBoxItem Name="sortAZNameSelection" IsSelected ="true" Selected="sortAZNameSelection_Selected">
-                        <TextBlock>↓ Tên</TextBlock>
-                    </ComboBoxItem>
-                    <ComboBoxItem Name="sortZANameSelection" Selected="sortZANameSelection_Selected">
-                        <TextBlock>↑ Tên</TextBlock>
-                    </ComboBoxItem>
-                    <ComboBoxItem Name="sortAZDateSelection" Selected="sortAZDateSelection_Selected">
-                        <TextBlock >↓ Ngày</TextBlock>
-                    </ComboBoxItem>
-                    <ComboBoxItem Name="sortZADateSelection" Selected="sortZADateSelection_Selected">
-                        <TextBlock>↑ Ngày</TextBlock>
-                    </ComboBoxItem>                   
-                </ComboBox>
-                
-                <StackPanel Orientation="Horizontal" Margin="50,0,0,0">
-                    <CheckBox  Name="favoriteFilter" Background="#2a7aa1" BorderBrush="#2a7aa1" VerticalAlignment="Center" Checked="favoriteFilter_Checked" Unchecked="favoriteFilter_Unchecked"></CheckBox>
-                    <TextBlock Margin="15,0,0,0" FontSize="14pt" VerticalAlignment="Center" Foreground="#2a7aa1">Yêu thích</TextBlock>
+                         BorderBrush="#1ba1e2"></TextBox>
+                    <Button Width="50" x:Name="searchButton" FontSize="22pt" Background="#1ba1e2" BorderBrush="#1ba1e2" Click="searchButton_Click">⌕</Button>
+
+                    <ComboBox x:Name="filterComboBox" Background="#1ba1e2" Width="100" Margin="20,0,0,0" FontSize="14pt" VerticalAlignment="Center">
+
+
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Background" Value="#1ba1e2"/>
+                                <Setter Property="BorderBrush" Value="#1ba1e2"/>
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBoxItem Name="sortAZNameSelection" IsSelected ="true" Selected="sortAZNameSelection_Selected">
+                            <TextBlock>↓ Tên</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem Name="sortZANameSelection" Selected="sortZANameSelection_Selected">
+                            <TextBlock>↑ Tên</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem Name="sortAZDateSelection" Selected="sortAZDateSelection_Selected">
+                            <TextBlock >↓ Ngày</TextBlock>
+                        </ComboBoxItem>
+                        <ComboBoxItem Name="sortZADateSelection" Selected="sortZADateSelection_Selected">
+                            <TextBlock>↑ Ngày</TextBlock>
+                        </ComboBoxItem>
+                    </ComboBox>
+
+                    <StackPanel Orientation="Horizontal" Margin="50,0,0,0">
+                        <CheckBox  Name="favoriteFilter" BorderBrush="#efefef" VerticalAlignment="Center" Checked="favoriteFilter_Checked" Unchecked="favoriteFilter_Unchecked"></CheckBox>
+                        <TextBlock Margin="15,0,0,0" FontSize="14pt" VerticalAlignment="Center" Foreground="#efefef">Yêu thích</TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="50,0,0,0">
+                        <Button x:Name="createRecipeButton" FontSize="16pt" Padding="10,0,10,0" Background="#1ba1e2" BorderBrush="#1ba1e2" Foreground="#efefef">+ Tạo mới</Button>
+                    </StackPanel>
+
+
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+                    <Button Click="previousPageButton_Click" FontSize="14pt" Foreground="White" Background="#333333" BorderBrush="#333333" Width="60">&lt;</Button>
+                    <TextBlock x:Name="numPageTextBlock" Text="1/10" FontSize="25" Foreground="AliceBlue" TextAlignment="Center" Padding="10" Background="#333333"></TextBlock>
+                    <Button Click="nextPageButton_Click" FontSize="14pt"  Foreground="White" Background="#333333" BorderBrush="#333333" Width="60">&gt;</Button>
                 </StackPanel>
                 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="50,0,0,0">
-                    <Button x:Name="createRecipeButton" FontSize="16pt" Padding="10,0,10,0" Background="#2a7aa1" BorderBrush="#2a7aa1">+ Tạo mới</Button>
-                </StackPanel>
-                
-                
-            </StackPanel>
-            
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Width="50" Name="previousPageButton" Background="#444444" Foreground="#6f6f6f" BorderThickness="0" FontSize="30pt" FontWeight="Bold" Click="previousPageButton_Click"> </Button>
-                <ListView Height="580px" Width="990px" Background="#444444" Name="foodsListView" BorderBrush="OrangeRed" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" Margin="10px"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Border Margin="20px">
-                                <StackPanel Orientation="Vertical" Margin="10px" Background="#5f5f5f">
-                                    <Image Source="{Binding Path=FoodImagePath, Converter={StaticResource DirectoryConverter}}" Width="230px" Height="150px" Margin="10px">
-                                    </Image>
-                                    <StackPanel Orientation="Horizontal" Width="205px" Margin="10px">
-                                        <Button Width="40" Background="{Binding Path=Liked, Converter={StaticResource BtnColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                BorderThickness="0" FontSize="15" Click="buttonLike_Click">
-                                            ♥
-                                        </Button>
-                                        <TextBlock Text="{Binding FoodName}" FontSize="12pt" FontWeight="Bold" Foreground="#b9e8ff"
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Width="50" Name="previousPageButton" Background="#efefef" Foreground="#afafaf" BorderThickness="0" FontSize="30pt" FontWeight="Bold" Click="previousPageButton_Click"></Button>
+                    <ListView Height="580px" Width="990px" Background="#efefef" Name="foodsListView" BorderBrush="OrangeRed" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" Margin="10px"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="20px">
+                                    <StackPanel Orientation="Vertical" Margin="10px">
+                                        <Image Source="{Binding Path=RecipeImagePath, Converter={StaticResource DirectoryConverter}}" Width="230px" Height="150px" Margin="10px">
+                                        </Image>
+                                        <StackPanel Orientation="Horizontal" Width="205px" Margin="10px">
+                                            <Button Width="40" Foreground="{Binding Path=Liked, Converter={StaticResource BtnColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                BorderThickness="0" FontSize="15" Click="buttonLike_Click"
+                                                Background="#efefef">
+                                                ♥
+                                            </Button>
+                                            <TextBlock Text="{Binding RecipeName}" FontSize="12pt" FontWeight="Bold" Foreground="#333333"
                                                   Width="150" TextAlignment="Center" />
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <Button Width="50" Name="nextPageButton" Background="#444444" Foreground="#6f6f6f" BorderThickness="0" FontSize="30pt" FontWeight="Bold" Click="nextPageButton_Click"></Button>
-            </StackPanel>
-            
-            <StackPanel Orientation="Vertical">
-                <TextBlock x:Name="numPageTextBlock" Text="1/10" FontSize="25" Foreground="AliceBlue" TextAlignment="Center" Padding="10" Background="#333333"></TextBlock>
-            </StackPanel>        
-                    
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <EventSetter Event="MouseLeftButtonUp" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                    <Button Width="50" Name="nextPageButton" Background="#efefef" Foreground="#afafaf" BorderThickness="0" FontSize="30pt" FontWeight="Bold" Click="nextPageButton_Click"></Button>
+                </StackPanel>
+                
+            </DockPanel>                       
         </StackPanel>
         
     </Grid>
-</Window>
+</Fluent:RibbonWindow>
