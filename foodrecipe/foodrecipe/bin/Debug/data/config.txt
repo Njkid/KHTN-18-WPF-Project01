@@ -1,3 +1,7 @@
-﻿splash on
-favorite off
-sort name asc
+splash
+off
+favorite
+off
+sort
+name
+asc

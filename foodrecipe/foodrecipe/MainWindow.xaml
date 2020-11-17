@@ -34,9 +34,8 @@
 
                             </Fluent:BackstageTabItem>
 
-                            <Fluent:BackstageTabItem Header="Exit" FontSize="14pt">
-
-
+                            <Fluent:BackstageTabItem Header="Exit" FontSize="14pt" MouseLeftButtonDown="BackstageTabItem_MouseLeftButtonDown">
+                                
                             </Fluent:BackstageTabItem>
 
                         </Fluent:BackstageTabControl>
@@ -62,7 +61,7 @@
                                 <Setter Property="BorderBrush" Value="#1ba1e2"/>
                             </Style>
                         </ComboBox.ItemContainerStyle>
-                        <ComboBoxItem Name="sortAZNameSelection" IsSelected ="true" Selected="sortAZNameSelection_Selected">
+                        <ComboBoxItem Name="sortAZNameSelection" Selected="sortAZNameSelection_Selected">
                             <TextBlock>↓ Tên</TextBlock>
                         </ComboBoxItem>
                         <ComboBoxItem Name="sortZANameSelection" Selected="sortZANameSelection_Selected">

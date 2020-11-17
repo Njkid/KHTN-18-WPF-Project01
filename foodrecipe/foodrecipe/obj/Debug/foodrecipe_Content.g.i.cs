@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("data/config.txt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("imgs/null.jpg")]
 
 

@@ -61,6 +61,18 @@ namespace foodrecipe
             foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
             numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
 
+            if (AppConfig.appconfig.Favorite) favoriteFilter.IsChecked = true;
+            if (AppConfig.appconfig.Name)
+            {
+                if (AppConfig.appconfig.Asc) filterComboBox.SelectedIndex = 0;
+                else filterComboBox.SelectedIndex = 1;
+            }
+            else
+            {
+                if (AppConfig.appconfig.Asc) filterComboBox.SelectedIndex = 2;
+                else filterComboBox.SelectedIndex = 3;
+            }
+
 
             DateTime dateTime = DateTime.Now;
             Debug.WriteLine(dateTime.ToString("dd/MM/yyyy"));
@@ -130,6 +142,9 @@ namespace foodrecipe
                 pageManager.ListRecipe.Sort(sortAZRecipeByName);
                 if (foodsListView != null) 
                     foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+                AppConfig.appconfig.Name = true;
+                AppConfig.appconfig.Asc = true;
+                AppConfig.Update();
             }
 
             private void sortZANameSelection_Selected(object sender, RoutedEventArgs e)
@@ -137,27 +152,38 @@ namespace foodrecipe
                 pageManager.ListRecipe.Sort(sortZARecipeByName);
                 if (foodsListView != null)
                     foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+                AppConfig.appconfig.Name = true;
+                AppConfig.appconfig.Asc = false;
+                AppConfig.Update();
             }
-
+   
             private void sortAZDateSelection_Selected(object sender, RoutedEventArgs e)
             {
                 pageManager.ListRecipe.Sort(sortAZRecipeByDate);
                 if (foodsListView != null)
                     foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+                AppConfig.appconfig.Name = false;
+                AppConfig.appconfig.Asc = true;
+                AppConfig.Update();
             }
 
-            private void sortZADateSelection_Selected(object sender, RoutedEventArgs e)
+        private void sortZADateSelection_Selected(object sender, RoutedEventArgs e)
             {
                 pageManager.ListRecipe.Sort(sortZARecipeByDate);
                 if (foodsListView != null)
                     foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+                AppConfig.appconfig.Name = false;
+                AppConfig.appconfig.Asc = false;
+                AppConfig.Update();
             }
 
-            private void favoriteFilter_Checked(object sender, RoutedEventArgs e)
+        private void favoriteFilter_Checked(object sender, RoutedEventArgs e)
             {
                 pageManager.UpdateListRecipe(subListRecipes.Where(item => item.Liked == true).ToList());
                 numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
                 foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+                AppConfig.appconfig.Favorite = true;
+                AppConfig.Update();
             }
 
             private void favoriteFilter_Unchecked(object sender, RoutedEventArgs e)
@@ -165,6 +191,9 @@ namespace foodrecipe
                 pageManager.UpdateListRecipe(subListRecipes);
                 numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
                 foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+                AppConfig.appconfig.Favorite = false;
+                AppConfig.Update();
+
             }
 
         #endregion
@@ -178,6 +207,11 @@ namespace foodrecipe
                 Window detail = new Detail(pageManager.ListRecipe[index + (pageManager.CurrentPage-1) * PageManager.NumPerPage]);
                 detail.Show();
             }
+        }
+
+        private void BackstageTabItem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.Close();
         }
     }
 
@@ -274,6 +308,7 @@ namespace foodrecipe
             steps = new List<Step>();
             Date = "";
             Liked = false;
+            RecipeImagePath = "imgs/null.jpg";
         }
 
     }
@@ -283,6 +318,11 @@ namespace foodrecipe
         public string NameStep { get; set; }
         public string Text { get; set; }
         public string Img { get; set; }
+
+        public Step()
+        {
+            Img = "imgs/null.jpg";
+        }
     }
 
     public class RecipeDAO
@@ -310,9 +350,12 @@ namespace foodrecipe
                     var newStep = new Step();
                     var line = rpReader.ReadLine(); // read <img>
                     newStep.Img = rpReader.ReadLine(); // read link img
-                    if (newStep.Img.Equals("-"))
+                    if (newStep.Img.Equals("-")) // if there are no img
                     {
                         newStep.Img = newRP.steps[newRP.steps.Count - 1].Img;
+                        if (newStep.Img.Equals("-")) {
+                            newStep.Img = "imgs/null.jpg";
+                        }
                     }
                     line = rpReader.ReadLine(); // read <step>
                     newStep.NameStep = rpReader.ReadLine(); // read name Step

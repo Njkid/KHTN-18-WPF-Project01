@@ -19,7 +19,7 @@
                 <StackPanel Height="400px" DockPanel.Dock="Top"></StackPanel>
                 <StackPanel DockPanel.Dock="Bottom" Height="40" VerticalAlignment="Center" Orientation="Horizontal" FlowDirection="RightToLeft">                    
                     <TextBlock VerticalAlignment="Center" Margin="20,0,0,0">Tắt màn hình này mỗi khi khởi động</TextBlock>
-                    <CheckBox VerticalAlignment="Center" Margin="10,0,0,0"></CheckBox>
+                    <CheckBox x:Name="offSplashCheckBox" VerticalAlignment="Center" Margin="10,0,0,0"></CheckBox>
                 </StackPanel>
             </DockPanel>
         </StackPanel>
