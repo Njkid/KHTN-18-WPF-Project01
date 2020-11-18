@@ -46,7 +46,7 @@
                             <Border CornerRadius="5" BorderThickness="1" BorderBrush="DarkGray" Background="#FF92C6F9" Padding="2" HorizontalAlignment="Left" Margin="5" Cursor="Hand" >
                                 <StackPanel VerticalAlignment="Center">
                                     <Image Height="85" Width="100" Source="{Binding Path=Img, Converter={StaticResource DirectoryConverter}}"></Image>
-                                    <TextBlock Text="{Binding Path=NameStep}"></TextBlock>
+                                    <TextBox Text="{Binding Path=NameStep}"></TextBox>
                                 </StackPanel>
                             </Border>
                         </ControlTemplate>
@@ -57,7 +57,7 @@
                                         <Border CornerRadius="5" BorderThickness="1" BorderBrush="DarkGray" Background="WhiteSmoke" Padding="2" HorizontalAlignment="Left" Margin="5" Cursor="Hand" >
                                             <StackPanel VerticalAlignment="Center">
                                                 <Image Height="85" Width="100" Source="{Binding Path=Img, Converter={StaticResource DirectoryConverter}}"></Image>
-                                                <TextBox Width="100" Text="{Binding Path=NameStep}"></TextBox>
+                                                <TextBlock Width="100" Text="{Binding Path=NameStep}"></TextBlock>
                                             </StackPanel>
                                         </Border>
                                     </ControlTemplate>

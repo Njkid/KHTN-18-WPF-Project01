@@ -31,3 +31,6 @@ D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\ob
 D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\obj\Debug\Detail.baml
 D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\bin\Debug\data\rp0.rp
 D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\bin\Debug\data\config.txt
+D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\obj\Debug\AddRP.g.cs
+D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\bin\Debug\imgs\null.jpg
+D:\KHTN\Nam3_Hocki1\ltWindows\P01\KHTN-18-WPF-Project01\foodrecipe\foodrecipe\obj\Debug\AddRP.baml

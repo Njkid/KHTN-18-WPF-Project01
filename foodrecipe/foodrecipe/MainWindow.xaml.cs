@@ -26,9 +26,9 @@ namespace foodrecipe
     {
         public static string WorkingDerectory { set; get; }
 
-        public PageManager pageManager;
-        public List<Recipe> foods;
-        public List<Recipe> subListRecipes;
+        public static PageManager pageManager;
+        public static List<Recipe> foods;
+        public static List<Recipe> subListRecipes;
 
         // Init sort type for list
         public SortAZRecipeByName sortAZRecipeByName = new SortAZRecipeByName();
@@ -167,7 +167,7 @@ namespace foodrecipe
                 AppConfig.Update();
             }
 
-        private void sortZADateSelection_Selected(object sender, RoutedEventArgs e)
+            private void sortZADateSelection_Selected(object sender, RoutedEventArgs e)
             {
                 pageManager.ListRecipe.Sort(sortZARecipeByDate);
                 if (foodsListView != null)
@@ -177,7 +177,7 @@ namespace foodrecipe
                 AppConfig.Update();
             }
 
-        private void favoriteFilter_Checked(object sender, RoutedEventArgs e)
+            private void favoriteFilter_Checked(object sender, RoutedEventArgs e)
             {
                 pageManager.UpdateListRecipe(subListRecipes.Where(item => item.Liked == true).ToList());
                 numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
@@ -212,6 +212,12 @@ namespace foodrecipe
         private void BackstageTabItem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Close();
+        }
+
+        private void createRecipeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var createRP = new AddRP();
+            createRP.Show();
         }
     }
 
@@ -309,6 +315,7 @@ namespace foodrecipe
             Date = "";
             Liked = false;
             RecipeImagePath = "imgs/null.jpg";
+            RecipeFile = "new";
         }
 
     }
@@ -322,19 +329,80 @@ namespace foodrecipe
         public Step()
         {
             Img = "imgs/null.jpg";
+            Text = "Điền thông tin mỗi bước";
+            NameStep = "Điền tên bước";
         }
     }
 
     public class RecipeDAO
     {
+        public static int numInitRP;
+
+        public static List<string> idfileRP = new List<string>();
+
+        public static void Update(Recipe value)
+        {
+            DateTime dateTime = DateTime.Now;
+            Debug.WriteLine(dateTime.ToString("dd/MM/yyyy"));
+
+            // if new, change path and update list in data.txt
+            if (value.RecipeFile.Equals("new"))
+            {
+                value.RecipeFile = "rp" + numInitRP + ".rp";
+                idfileRP.Add(value.RecipeFile);                
+
+                numInitRP++;
+
+                var updateDatafile = new StreamWriter(MainWindow.WorkingDerectory + "data/data.txt");
+
+                updateDatafile.WriteLine(numInitRP);
+
+                foreach (var line in idfileRP)
+                {
+                    updateDatafile.WriteLine(line);
+                }
+
+                updateDatafile.Close();
+            }
+
+            // write down data
+            var writer = new StreamWriter(MainWindow.WorkingDerectory + "data/" + value.RecipeFile);
+
+            writer.WriteLine(value.RecipeName);
+
+            writer.WriteLine(dateTime.ToString("dd/MM/yyyy"));
+
+            if (value.Liked) writer.WriteLine("<liked>");
+            else writer.WriteLine("<!liked>");
+
+            foreach (var step in value.steps)
+            {
+                writer.WriteLine("<img>");
+                writer.WriteLine(step.Img);
+                writer.WriteLine("<step>");
+                writer.WriteLine(step.Text);
+                writer.WriteLine("</step>");
+            }
+            
+            writer.Close();
+
+            MainWindow.foods = GetAll();
+            MainWindow.subListRecipes = MainWindow.foods;
+            MainWindow.pageManager.UpdateListRecipe(MainWindow.subListRecipes);
+        }
+
         public static List<Recipe> GetAll()
         {
             List<Recipe> result = new List<Recipe>();
             var dataReader = new StreamReader(MainWindow.WorkingDerectory + "data/data.txt");
+            var strnumInit = dataReader.ReadLine();
+
+            numInitRP = Int32.Parse(strnumInit);
 
             while (!dataReader.EndOfStream)
             {
                 var fileRP = dataReader.ReadLine();
+                idfileRP.Add(fileRP);
                 var rpReader = new StreamReader(MainWindow.WorkingDerectory + "data/" + fileRP);                 
 
                 var newRP = new Recipe();
