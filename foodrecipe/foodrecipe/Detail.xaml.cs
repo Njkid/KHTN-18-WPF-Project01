@@ -92,6 +92,8 @@ namespace foodrecipe
                 NextImgButton.Source = new BitmapImage(new Uri(MainWindow.WorkingDerectory + CurrentRecipe.steps[index + 1].Img));
             }
         }
+
+        
     }
 
     

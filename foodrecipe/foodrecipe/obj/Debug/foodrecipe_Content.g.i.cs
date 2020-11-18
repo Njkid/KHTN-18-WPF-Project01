@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("imgs/null.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("fried-egg.ico")]
 
 

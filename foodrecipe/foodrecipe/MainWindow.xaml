@@ -28,8 +28,8 @@
                         <Fluent:BackstageTabControl >
                             <Fluent:BackstageTabItem Header="Info" FontSize="14pt">
                                 <StackPanel>
-                                    <Label>ID: 18120333</Label>
-                                    <Label>Name: NGUYEN QUOC DUNG</Label>
+                                    <Label Foreground="White">ID: 18120333</Label>
+                                    <Label  Foreground="White">Name: NGUYEN QUOC DUNG</Label>
                                 </StackPanel>
 
                             </Fluent:BackstageTabItem>
@@ -49,7 +49,7 @@
                     <TextBox Width="500px" Name="searchTextBox" TextAlignment="Left" Padding="10px" FontSize="12pt" 
                          Foreground="#b9e8ff" 
                          Background="#333333"
-                         BorderBrush="#1ba1e2"></TextBox>
+                         BorderBrush="#1ba1e2" KeyUp="searchTextBox_KeyUp"></TextBox>
                     <Button Width="50" x:Name="searchButton" FontSize="22pt" Background="#1ba1e2" BorderBrush="#1ba1e2" Click="searchButton_Click">⌕</Button>
 
                     <ComboBox x:Name="filterComboBox" Background="#1ba1e2" Width="100" Margin="20,0,0,0" FontSize="14pt" VerticalAlignment="Center">
@@ -108,7 +108,7 @@
                                         <Image Source="{Binding Path=RecipeImagePath, Converter={StaticResource DirectoryConverter}}" Width="230px" Height="150px" Margin="10px">
                                         </Image>
                                         <StackPanel Orientation="Horizontal" Width="205px" Margin="10px">
-                                            <Button Width="40" Foreground="{Binding Path=Liked, Converter={StaticResource BtnColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            <Button Width="40" Foreground="{Binding Path=Liked, Converter={StaticResource BtnColorConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Tag="{Binding RecipeFile}"
                                                 BorderThickness="0" FontSize="15" Click="buttonLike_Click"
                                                 Background="#efefef">
                                                 ♥

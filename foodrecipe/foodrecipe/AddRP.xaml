@@ -18,8 +18,8 @@
             <DockPanel DockPanel.Dock="Top" Height="30" Background="#252525">
                 <Button x:Name="backButton" DockPanel.Dock="Left" Foreground="White" Background="#252525" BorderBrush="#252525" FontSize="14pt" Click="backButton_Click">&lt; Trở lại</Button>
                 
-                <Button x:Name="saveButton" DockPanel.Dock="Right" Width="100" Foreground="White" Background="#000000" BorderBrush="#252525" FontSize="14pt" Click="backButton_Click">Lưu</Button>
-                <TextBox DockPanel.Dock="Right" Width="450" Padding="2px" FontSize="12pt"> Tên món ăn</TextBox>
+                <Button x:Name="saveButton" DockPanel.Dock="Right" Width="100" Foreground="White" Background="#000000" BorderBrush="#252525" FontSize="14pt" Click="saveButton_Click">Lưu</Button>
+                <TextBox x:Name="rpNameTextBox" DockPanel.Dock="Right" Width="450" Padding="2px" FontSize="12pt" TextChanged="rpNameTextBox_TextChanged"> Tên món ăn</TextBox>
                 <Label></Label>
             </DockPanel>
             <StackPanel DockPanel.Dock="Bottom" Height="30" Orientation="Horizontal" HorizontalAlignment="Center">
@@ -102,7 +102,7 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Background="#efefef">
-                    <TextBox x:Name="StepText" Padding="10" Foreground="#333333" TextWrapping="Wrap" FontSize="12pt" Height="650"> Thông tin mỗi bước chế biến</TextBox>
+                    <TextBox x:Name="StepText" Padding="10" Foreground="#333333" TextWrapping="Wrap" FontSize="12pt" Height="650" TextChanged="StepText_TextChanged" KeyUp="StepText_KeyUp" AcceptsReturn="True"> Thông tin mỗi bước chế biến</TextBox>
                 </StackPanel>
 
             </Grid>

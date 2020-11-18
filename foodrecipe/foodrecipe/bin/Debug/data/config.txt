@@ -1,7 +1,7 @@
 splash
 off
 favorite
-off
+on
 sort
 name
 asc

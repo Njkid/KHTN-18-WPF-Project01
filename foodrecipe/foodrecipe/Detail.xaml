@@ -98,7 +98,7 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Background="#efefef">
-                    <TextBlock x:Name="StepText" Padding="10" Foreground="#333333" TextWrapping="Wrap" FontSize="12pt"> This is place to put step detail in</TextBlock>
+                    <TextBlock x:Name="StepText" Padding="10" Foreground="#333333" TextWrapping="Wrap" FontSize="12pt" > This is place to put step detail in</TextBlock>
                 </StackPanel>
                 
             </Grid>            

@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.ComponentModel;
+using System.IO;
+using Microsoft.Win32;
+
 
 namespace foodrecipe
 {
@@ -26,10 +29,11 @@ namespace foodrecipe
         public int maxStep { get; set; }
         public AddRP()
         {
+            CurrentRecipe = new Recipe();
             InitializeComponent();
             
               
-            CurrentRecipe = new Recipe();
+            
             Title = "Tạo mới công thức";
 
             CurrentRecipe.steps.Add(new Step());
@@ -47,7 +51,26 @@ namespace foodrecipe
 
         private void currentStepUpload_Click(object sender, RoutedEventArgs e)
         {
+            OpenFileDialog openFileDialogCSV = new OpenFileDialog();
 
+            openFileDialogCSV.ShowDialog();
+            openFileDialogCSV.Filter = "JPEG files (*.jpg)|*.jpg|All files (*.*)|*.*";
+            openFileDialogCSV.FilterIndex = 1;
+            openFileDialogCSV.RestoreDirectory = true;
+
+            var fileName = openFileDialogCSV.FileName;
+            int index = stepsListView.SelectedIndex;
+
+            System.IO.File.Copy(fileName,MainWindow.WorkingDerectory + "imgs/rp" + RecipeDAO.numInitRP + "img" + index + ".jpg", true);
+
+            CurrentRecipe.steps[index].Img = "imgs/rp" + RecipeDAO.numInitRP + "img" + index + ".jpg";
+
+            if (index == 0)
+            {
+                CurrentRecipe.RecipeImagePath = CurrentRecipe.steps[index].Img;
+            }
+
+            stepsListView.Items.Refresh();
         }
 
         private void DataTemplate_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -67,6 +90,7 @@ namespace foodrecipe
             }
             
             StepText.Text = CurrentRecipe.steps[index].Text;
+            Debug.WriteLine(CurrentRecipe.steps[index].Text);
             stepCurrentText.Text = "" + (stepsListView.SelectedIndex + 1) + "/" + (maxStep + 1);    
 
             if (index > 0)
@@ -102,6 +126,38 @@ namespace foodrecipe
             stepsListView.SelectedIndex = currentStep;
             stepsListView.ScrollIntoView(stepsListView.Items[currentStep]);
             stepCurrentText.Text = "" + (currentStep + 1) + "/" + (maxStep + 1);
+        }
+                
+        
+        
+        private void StepText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int index = stepsListView.SelectedIndex; 
+            if (index >= 0)
+            {
+                CurrentRecipe.steps[index].Text = StepText.Text;
+                stepsListView.Items.Refresh();
+            }
+            
+        }
+
+        private void rpNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CurrentRecipe.RecipeName = rpNameTextBox.Text;           
+        }
+
+        private void saveButton_Click(object sender, RoutedEventArgs e)
+        {
+            RecipeDAO.Update(CurrentRecipe);
+            MessageBox.Show("Thêm thành công!");
+        }
+
+        private void StepText_KeyUp(object sender, KeyEventArgs e)
+        {            
+            if (e.Key == Key.Enter)
+            {
+                //newline
+            }            
         }
     }
 }

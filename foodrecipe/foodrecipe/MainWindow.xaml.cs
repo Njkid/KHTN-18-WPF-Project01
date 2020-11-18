@@ -94,14 +94,10 @@ namespace foodrecipe
                 {
                     btn.Foreground = (Brush)bc.ConvertFrom("#9f9f9f");
                 }
-
-                // debug binding data
-                foreach (var item in subListRecipes)
-                {
-                    Debug.WriteLine(item.Liked);
-                }
-
-            
+                Debug.WriteLine(btn.Tag.ToString());
+                RecipeDAO.Update((Recipe)(subListRecipes.Where(
+                    item => item.RecipeFile.Equals(btn.Tag.ToString())).ToList())[0]
+                    );       
             }
 
             private void previousPageButton_Click(object sender, RoutedEventArgs e)
@@ -217,7 +213,21 @@ namespace foodrecipe
         private void createRecipeButton_Click(object sender, RoutedEventArgs e)
         {
             var createRP = new AddRP();
-            createRP.Show();
+            createRP.ShowDialog();
+            foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+            foodsListView.Items.Refresh();
+        }
+
+        private void searchTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                string key = searchTextBox.Text.ToLower();
+
+                pageManager.UpdateListRecipe(subListRecipes.Where(item => item.RecipeName.ToLower().IndexOf(key) >= 0).ToList());
+                numPageTextBlock.Text = (pageManager.CurrentPage).ToString() + "/" + pageManager.MaxPage;
+                foodsListView.ItemsSource = pageManager.GetDataCurrentPage();
+            }
         }
     }
 
@@ -316,6 +326,7 @@ namespace foodrecipe
             Liked = false;
             RecipeImagePath = "imgs/null.jpg";
             RecipeFile = "new";
+            RecipeName = "";
         }
 
     }
@@ -372,23 +383,34 @@ namespace foodrecipe
 
             writer.WriteLine(dateTime.ToString("dd/MM/yyyy"));
 
+            Debug.WriteLine("Changed " + value.RecipeFile + " " + value.Liked);
             if (value.Liked) writer.WriteLine("<liked>");
             else writer.WriteLine("<!liked>");
 
             foreach (var step in value.steps)
             {
-                writer.WriteLine("<img>");
-                writer.WriteLine(step.Img);
-                writer.WriteLine("<step>");
-                writer.WriteLine(step.Text);
-                writer.WriteLine("</step>");
+                if (!step.NameStep.Equals("Điền tên bước"))
+                {
+                    writer.WriteLine("<img>");
+                    writer.WriteLine(step.Img);
+                    writer.WriteLine("<step>");
+                    writer.WriteLine(step.NameStep);
+                    writer.WriteLine(step.Text);
+                    writer.WriteLine("</step>");
+                }
+                else
+                {
+                    break;
+                }
             }
             
             writer.Close();
 
+            
+
             MainWindow.foods = GetAll();
-            MainWindow.subListRecipes = MainWindow.foods;
-            MainWindow.pageManager.UpdateListRecipe(MainWindow.subListRecipes);
+            MainWindow.subListRecipes = new List<Recipe>(MainWindow.foods);
+            MainWindow.pageManager.UpdateListRecipe(MainWindow.subListRecipes);             
         }
 
         public static List<Recipe> GetAll()
@@ -396,6 +418,7 @@ namespace foodrecipe
             List<Recipe> result = new List<Recipe>();
             var dataReader = new StreamReader(MainWindow.WorkingDerectory + "data/data.txt");
             var strnumInit = dataReader.ReadLine();
+            idfileRP.Clear();
 
             numInitRP = Int32.Parse(strnumInit);
 
@@ -429,6 +452,7 @@ namespace foodrecipe
                     newStep.NameStep = rpReader.ReadLine(); // read name Step
 
                     line = rpReader.ReadLine();
+                    newStep.Text = "";
 
                     while (!line.Equals("</step>"))
                     {
@@ -447,7 +471,6 @@ namespace foodrecipe
                 rpReader.Close();
 
                 result.Add(newRP);
-                break;
 
             }
 
